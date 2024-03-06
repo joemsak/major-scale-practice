@@ -1,80 +1,45 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import cx from "clsx";
 
 export default function Home() {
   const [selectedRoot, setSelectedRoot] = useState("");
-  const [selectedScales, setSelectedScales] = useState([]);
+  const [selectedRootIdx, setSelectedRootIdx] = useState();
+  const [selectedChords, setSelectedChords] = useState([]);
 
-  const notes = [
-    "C",
-    "Db",
-    "D",
-    "Eb",
-    "E",
-    "F",
-    "Gb",
-    "G",
-    "Ab",
-    "A",
-    "Bb",
-    "B",
-  ];
+  const notes = useMemo(
+    () => ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"],
+    []
+  );
 
-  const scales = [
-    {
-      numeral: "I",
-      steps: 2,
-      type: "major",
-      isMajor: true,
-    },
-    {
-      numeral: "ii",
-      steps: 2,
-      type: "minor",
-      isMajor: false,
-    },
-    {
-      numeral: "iii",
-      steps: 1,
-      type: "minor",
-      isMajor: false,
-    },
-    {
-      numeral: "IV",
-      steps: 2,
-      type: "major",
-      isMajor: true,
-    },
-    {
-      numeral: "V",
-      steps: 2,
-      type: "dominant",
-      isMajor: true,
-    },
-    {
-      numeral: "vii",
-      steps: 2,
-      type: "minor",
-      isMajor: false,
-    },
-    {
-      numeral: "vii°",
-      steps: 1,
-      type: "half-diminished",
-      isMajor: false,
-    },
-  ];
+  useEffect(() => {
+    setSelectedRootIdx(notes.indexOf(selectedRoot));
+  }, [notes, selectedRoot]);
 
-  const selectedScaleColors = [
+  const majorScaleSteps = [0, 2, 2, 1, 2, 2, 2, 1];
+  const majorChords = ["I", "ii", "iii", "IV", "V", "vi", "vii°"];
+
+  const selectedChordColors = [
     "bg-green-600",
     "bg-sky-600",
     "bg-pink-600",
     "bg-orange-600",
   ];
 
-  const chordTones = (scale) => {
-    return [];
+  const chordTones = (chord) => {
+    const chordIdx = majorChords.indexOf(chord);
+
+    const stepsCandidate = majorScaleSteps
+      .filter((_, i) => i <= chordIdx)
+      .reduce((a, s) => a + s, 0);
+
+    const steps = stepsCandidate > 11 ? stepsCandidate - 12 : stepsCandidate;
+
+    return new Array(7).fill().map((_, i) => {
+      const candidate = selectedRootIdx + steps;
+      const idx = candidate > 11 ? candidate - 12 : candidate;
+      return [notes[idx]];
+    });
   };
 
   const selectedRootStyle = (note) =>
@@ -82,23 +47,23 @@ export default function Home() {
       ? "bg-slate-100 text-black pointer-events-none"
       : "bg-slate-600 text-slate-400 hover:bg-slate-300";
 
-  const selectedScaleStyle = (scale) => {
-    const idx = selectedScales.map((s) => s.numeral).indexOf(scale.numeral);
+  const selectedChordStyle = (chord) => {
+    const idx = selectedChords.indexOf(chord);
 
     if (idx > -1) {
-      return cx("text-white", selectedScaleColors[idx]);
-    } else if (selectedScales.length < 4) {
+      return cx("text-white", selectedChordColors[idx]);
+    } else if (selectedChords.length < 4) {
       return "bg-slate-600 text-slate-400 hover:bg-slate-300";
     } else {
       return "opacity-70 bg-slate-600 text-slate-400 pointer-events-none";
     }
   };
 
-  const manageSelectedScales = (scale) => {
-    if (selectedScales.includes(scale))
-      setSelectedScales([...selectedScales.filter((s) => s !== scale)]);
-    else if (selectedScales.length < 4)
-      setSelectedScales([...selectedScales, scale]);
+  const manageSelectedScales = (chord) => {
+    if (selectedChords.includes(chord))
+      setSelectedChords([...selectedChords.filter((s) => s !== chord)]);
+    else if (selectedChords.length < 4)
+      setSelectedChords([...selectedChords, chord]);
   };
 
   return (
@@ -119,28 +84,39 @@ export default function Home() {
       </div>
 
       <div className="mt-8 flex justify-between">
-        {scales.map((scale, i) => (
+        {majorChords.map((chord, i) => (
           <button
-            key={`scale-picker-${i}`}
+            key={`chord-picker-${i}`}
             className={cx(
               "mr-4 last:mr-0 text-6xl py-2 rounded-lg w-[115px]",
-              selectedScaleStyle(scale)
+              selectedChordStyle(chord)
             )}
-            onClick={() => manageSelectedScales(scale)}
+            onClick={() => manageSelectedScales(chord)}
           >
-            {scale.numeral}
+            {chord}
           </button>
         ))}
       </div>
 
-      {selectedScales.map((scale, i) => (
-        <div key={`selected-scale-${i}`} className="mt-8">
-          {chordTones(scale).map((tone, n) => (
+      <div className="mt-8 flex">
+        {[1, 3, 5, 7, 9, 11, 13].map((degree, i) => (
+          <span
+            key={`chord-degree-${i}`}
+            className="flex items-center justify-center mr-4 last:mr-0 text-6xl py-2 rounded-lg w-[115px]"
+          >
+            {degree}
+          </span>
+        ))}
+      </div>
+
+      {selectedChords.map((chord, i) => (
+        <div key={`selected-chord-${i}`} className="mt-8 flex">
+          {chordTones(chord).map((tone, n) => (
             <div
               key={`tone-${i}-${n}`}
               className={cx(
-                "mr-4 last:mr-0 text-6xl py-2 rounded-lg w-[115px] text-center",
-                selectedScaleStyle(scale)
+                "flex items-center justify-center mr-4 last:mr-0 text-6xl py-2 rounded-lg w-[115px] text-white",
+                selectedChordColors[i]
               )}
             >
               {tone}
