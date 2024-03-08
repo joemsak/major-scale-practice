@@ -33,7 +33,9 @@ export default function Home() {
     });
 
     setSelectedMajorScale(
-      majorScale.concat(majorScale.slice(1, majorScale.length - 1))
+      majorScale
+        .concat(majorScale.slice(1, majorScale.length))
+        .concat(majorScale.slice(1, majorScale.length))
     );
   }, [notes, selectedRootIdx, majorScaleSteps, threeOctaves]);
 
@@ -48,11 +50,7 @@ export default function Home() {
 
   const chordTones = (chord) => {
     const chordIdx = majorChords.indexOf(chord);
-
-    return [
-      selectedMajorScale[chordIdx],
-      ...selectedMajorScale.filter((_, i) => i > chordIdx && i % 2 === 0),
-    ];
+    return [0, 2, 4, 6, 8, 10, 12].map((n) => selectedMajorScale[chordIdx + n]);
   };
 
   const selectedRootStyle = (note) =>
