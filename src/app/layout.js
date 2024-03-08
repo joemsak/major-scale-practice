@@ -5,8 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Major Scale Practice Sheet",
-  description: "Major scale exercise designed by Tim Johnson",
+  title: "Chord Progression Practice Sheet",
+  description:
+    "Major scale & chrod progression exercise designed by Tim Johnson ∙ Web Application by Joe Sak",
 };
 
 export default function RootLayout({ children }) {
