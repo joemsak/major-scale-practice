@@ -52,10 +52,10 @@ export default function Home() {
 
     if (idx > -1) {
       return cx("text-white", selectedChordColors[idx]);
-    } else if (selectedChords.length < 4) {
-      return "bg-slate-600 text-slate-400 hover:bg-slate-300";
-    } else {
+    } else if (!selectedRoot || selectedChords.length > 3) {
       return "opacity-70 bg-slate-600 text-slate-400 pointer-events-none";
+    } else {
+      return "bg-slate-600 text-slate-400 hover:bg-slate-300";
     }
   };
 
@@ -98,16 +98,18 @@ export default function Home() {
         ))}
       </div>
 
-      <div className="mt-8 flex">
-        {[1, 3, 5, 7, 9, 11, 13].map((degree, i) => (
-          <span
-            key={`chord-degree-${i}`}
-            className="flex items-center justify-center mr-4 last:mr-0 text-6xl py-2 rounded-lg w-[115px]"
-          >
-            {degree}
-          </span>
-        ))}
-      </div>
+      {!!selectedChords.length && (
+        <div className="mt-8 flex">
+          {[1, 3, 5, 7, 9, 11, 13].map((degree, i) => (
+            <span
+              key={`chord-degree-${i}`}
+              className="flex items-center justify-center mr-4 last:mr-0 text-6xl py-2 rounded-lg w-[115px]"
+            >
+              {degree}
+            </span>
+          ))}
+        </div>
+      )}
 
       {selectedChords.map((chord, i) => (
         <div key={`selected-chord-${i}`} className="mt-8 flex">
