@@ -6,17 +6,37 @@ export default function Home() {
   const [selectedRoot, setSelectedRoot] = useState("");
   const [selectedRootIdx, setSelectedRootIdx] = useState();
   const [selectedChords, setSelectedChords] = useState([]);
+  const [selectedMajorScale, setSelectedMajorScale] = useState([]);
 
   const notes = useMemo(
     () => ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"],
     []
   );
 
+  const threeOctaves = useMemo(
+    () => notes.concat(notes).concat(notes),
+    [notes]
+  );
+
+  const majorScaleSteps = useMemo(() => [2, 2, 1, 2, 2, 2, 1], []);
+
   useEffect(() => {
     setSelectedRootIdx(notes.indexOf(selectedRoot));
   }, [notes, selectedRoot]);
 
-  const majorScaleSteps = [0, 2, 2, 1, 2, 2, 2, 1];
+  useEffect(() => {
+    const majorScale = [notes[selectedRootIdx]];
+
+    majorScaleSteps.forEach((interval) => {
+      const lastIdx = notes.indexOf(majorScale[majorScale.length - 1]);
+      majorScale.push(threeOctaves[lastIdx + interval]);
+    });
+
+    setSelectedMajorScale(
+      majorScale.concat(majorScale.slice(1, majorScale.length - 1))
+    );
+  }, [notes, selectedRootIdx, majorScaleSteps, threeOctaves]);
+
   const majorChords = ["I", "ii", "iii", "IV", "V", "vi", "vii°"];
 
   const selectedChordColors = [
@@ -29,17 +49,10 @@ export default function Home() {
   const chordTones = (chord) => {
     const chordIdx = majorChords.indexOf(chord);
 
-    const stepsCandidate = majorScaleSteps
-      .filter((_, i) => i <= chordIdx)
-      .reduce((a, s) => a + s, 0);
-
-    const steps = stepsCandidate > 11 ? stepsCandidate - 12 : stepsCandidate;
-
-    return new Array(7).fill().map((_, i) => {
-      const candidate = selectedRootIdx + steps;
-      const idx = candidate > 11 ? candidate - 12 : candidate;
-      return [notes[idx]];
-    });
+    return [
+      selectedMajorScale[chordIdx],
+      ...selectedMajorScale.filter((_, i) => i > chordIdx && i % 2 === 0),
+    ];
   };
 
   const selectedRootStyle = (note) =>
