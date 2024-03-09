@@ -78,39 +78,38 @@ export default function Home() {
   };
 
   return (
-    <main className="p-8 md:px-24">
-      <div className="grid grid-cols-3 gap-4">
-        {notes.map((note, i) => (
-          <button
-            key={`root-picker-${i}`}
-            className={cx(
-              "text-6xl py-2 rounded-lg w-[115px]",
-              selectedRootStyle(note)
-            )}
-            onClick={(e) => setSelectedRoot(e.target.textContent)}
-          >
-            {note}
-          </button>
-        ))}
-      </div>
+    <main className="grid grid-cols-3 gap-4 pl-4 pt-4">
+      {notes.map((note, i) => (
+        <button
+          key={`root-picker-${i}`}
+          className={cx(
+            "text-6xl py-2 rounded-lg w-[115px]",
+            selectedRootStyle(note)
+          )}
+          onClick={(e) => setSelectedRoot(e.target.textContent)}
+        >
+          {note}
+        </button>
+      ))}
 
-      <div className="mt-8 grid grid-cols-3 gap-4">
-        {majorChords.map((chord, i) => (
-          <button
-            key={`chord-picker-${i}`}
-            className={cx(
-              "mr-4 last:mr-0 text-6xl py-2 rounded-lg w-[115px]",
-              selectedChordStyle(chord)
-            )}
-            onClick={() => manageSelectedScales(chord)}
-          >
-            {chord}
-          </button>
-        ))}
-      </div>
+      {majorChords.map((chord, i) => (
+        <button
+          key={`chord-picker-${i}`}
+          className={cx(
+            "text-6xl py-2 rounded-lg w-[115px]",
+            selectedChordStyle(chord)
+          )}
+          onClick={() => manageSelectedScales(chord)}
+        >
+          {chord}
+        </button>
+      ))}
+
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
 
       {selectedChords.map((chord, i) => (
-        <div key={`chord-${i}`} className="mt-8 grid grid-cols-3 gap-4">
+        <>
           {[1, 3, 5, 7, 9, 11, 13].map((degree, n) => (
             <div
               key={`chord-degree-${i}-${n}`}
@@ -127,7 +126,9 @@ export default function Home() {
               </div>
             </div>
           ))}
-        </div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+        </>
       ))}
     </main>
   );
