@@ -78,7 +78,7 @@ export default function Home() {
   };
 
   return (
-    <main className="grid grid-cols-3 gap-4 pl-4 pt-4">
+    <main className="grid grid-cols-3 w-full justify-evenly gap-4">
       {notes.map((note, i) => (
         <button
           key={`root-picker-${i}`}
@@ -112,18 +112,14 @@ export default function Home() {
         <>
           {[1, 3, 5, 7, 9, 11, 13].map((degree, n) => (
             <div
-              key={`chord-degree-${i}-${n}`}
-              className="flex flex-col items-center justify-center py-2 w-[115px]"
+              key={`chord-tone-${i}-${n}`}
+              className={cx(
+                "flex flex-col items-center justify-center py-2 w-[115px] rounded-lg",
+                selectedChordColors[i]
+              )}
             >
               <span className="text-2xl">{degree}</span>
-              <div
-                className={cx(
-                  "flex items-center justify-center text-6xl w-full rounded-lg py-2",
-                  selectedChordColors[i]
-                )}
-              >
-                {chordTones(chord)[n]}
-              </div>
+              <span className="text-6xl">{chordTones(chord)[n]}</span>
             </div>
           ))}
           <div>&nbsp;</div>
