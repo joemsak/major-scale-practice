@@ -78,13 +78,13 @@ export default function Home() {
   };
 
   return (
-    <main className="py-8 px-24">
-      <div className="flex justify-between">
+    <main className="p-8 md:px-24">
+      <div className="grid grid-cols-3 gap-4">
         {notes.map((note, i) => (
           <button
             key={`root-picker-${i}`}
             className={cx(
-              "mr-4 last:mr-0 text-6xl py-2 rounded-lg w-[115px]",
+              "text-6xl py-2 rounded-lg w-[115px]",
               selectedRootStyle(note)
             )}
             onClick={(e) => setSelectedRoot(e.target.textContent)}
@@ -94,7 +94,7 @@ export default function Home() {
         ))}
       </div>
 
-      <div className="mt-8 flex justify-between">
+      <div className="mt-8 grid grid-cols-3 gap-4">
         {majorChords.map((chord, i) => (
           <button
             key={`chord-picker-${i}`}
@@ -109,30 +109,22 @@ export default function Home() {
         ))}
       </div>
 
-      {!!selectedChords.length && (
-        <div className="mt-8 flex">
-          {[1, 3, 5, 7, 9, 11, 13].map((degree, i) => (
-            <span
-              key={`chord-degree-${i}`}
-              className="flex items-center justify-center mr-4 last:mr-0 text-6xl py-2 rounded-lg w-[115px]"
-            >
-              {degree}
-            </span>
-          ))}
-        </div>
-      )}
-
       {selectedChords.map((chord, i) => (
-        <div key={`selected-chord-${i}`} className="mt-8 flex">
-          {chordTones(chord).map((tone, n) => (
+        <div key={`chord-${i}`} className="mt-8 grid grid-cols-3 gap-4">
+          {[1, 3, 5, 7, 9, 11, 13].map((degree, n) => (
             <div
-              key={`tone-${i}-${n}`}
-              className={cx(
-                "flex items-center justify-center mr-4 last:mr-0 text-6xl py-2 rounded-lg w-[115px] text-white",
-                selectedChordColors[i]
-              )}
+              key={`chord-degree-${i}-${n}`}
+              className="flex flex-col items-center justify-center py-2 w-[115px]"
             >
-              {tone}
+              <span className="text-2xl">{degree}</span>
+              <div
+                className={cx(
+                  "flex items-center justify-center text-6xl w-full rounded-lg py-2",
+                  selectedChordColors[i]
+                )}
+              >
+                {chordTones(chord)[n]}
+              </div>
             </div>
           ))}
         </div>
