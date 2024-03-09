@@ -20,7 +20,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-screen">
-      <body className={cx(inter.className, "h-screen")}>{children}</body>
+      <body
+        className={cx(
+          inter.className,
+          "grid items-center justify-center h-screen"
+        )}
+      >
+        {children}
+      </body>
     </html>
   );
 }

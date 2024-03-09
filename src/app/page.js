@@ -78,12 +78,12 @@ export default function Home() {
   };
 
   return (
-    <main className="grid grid-cols-3 w-full justify-evenly gap-4">
+    <main className="grid grid-cols-3 md:grid-cols-12 w-full gap-4 md:p-4">
       {notes.map((note, i) => (
         <button
           key={`root-picker-${i}`}
           className={cx(
-            "text-6xl py-2 rounded-lg w-[115px]",
+            "text-5xl py-2 rounded-lg w-[115px]",
             selectedRootStyle(note)
           )}
           onClick={(e) => setSelectedRoot(e.target.textContent)}
@@ -92,21 +92,21 @@ export default function Home() {
         </button>
       ))}
 
-      {majorChords.map((chord, i) => (
-        <button
-          key={`chord-picker-${i}`}
-          className={cx(
-            "text-6xl py-2 rounded-lg w-[115px]",
-            selectedChordStyle(chord)
-          )}
-          onClick={() => manageSelectedScales(chord)}
-        >
-          {chord}
-        </button>
-      ))}
+      {!!selectedRoot &&
+        majorChords.map((chord, i) => (
+          <button
+            key={`chord-picker-${i}`}
+            className={cx(
+              "text-5xl py-2 rounded-lg w-[115px]",
+              selectedChordStyle(chord)
+            )}
+            onClick={() => manageSelectedScales(chord)}
+          >
+            {chord}
+          </button>
+        ))}
 
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
+      <div className="col-span-2 md:col-span-12">&nbsp;</div>
 
       {selectedChords.map((chord, i) => (
         <>
@@ -119,11 +119,10 @@ export default function Home() {
               )}
             >
               <span className="text-2xl">{degree}</span>
-              <span className="text-6xl">{chordTones(chord)[n]}</span>
+              <span className="text-5xl">{chordTones(chord)[n]}</span>
             </div>
           ))}
-          <div>&nbsp;</div>
-          <div>&nbsp;</div>
+          <div className="col-span-2 md:col-span-12">&nbsp;</div>
         </>
       ))}
     </main>
