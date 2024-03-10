@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import cx from "clsx";
+import { notes, threeOctaves, majorScaleSteps, majorChords } from "@/lib/music";
 
 export default function Home() {
   const [selectedRoot, setSelectedRoot] = useState("");
@@ -8,21 +9,9 @@ export default function Home() {
   const [selectedChords, setSelectedChords] = useState([]);
   const [selectedMajorScale, setSelectedMajorScale] = useState([]);
 
-  const notes = useMemo(
-    () => ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"],
-    []
-  );
-
-  const threeOctaves = useMemo(
-    () => notes.concat(notes).concat(notes),
-    [notes]
-  );
-
-  const majorScaleSteps = useMemo(() => [2, 2, 1, 2, 2, 2, 1], []);
-
   useEffect(() => {
     setSelectedRootIdx(notes.indexOf(selectedRoot));
-  }, [notes, selectedRoot]);
+  }, [selectedRoot]);
 
   useEffect(() => {
     const majorScale = [notes[selectedRootIdx]];
@@ -37,9 +26,12 @@ export default function Home() {
         .concat(majorScale.slice(1, majorScale.length))
         .concat(majorScale.slice(1, majorScale.length))
     );
-  }, [notes, selectedRootIdx, majorScaleSteps, threeOctaves]);
+  }, [selectedRootIdx]);
 
-  const majorChords = ["I", "ii", "iii", "IV", "V", "vi", "vii°"];
+  const chordTones = (chord) => {
+    const chordIdx = majorChords.indexOf(chord);
+    return [0, 2, 4, 6, 8, 10, 12].map((n) => selectedMajorScale[chordIdx + n]);
+  };
 
   const selectedChordColors = [
     "bg-green-600",
@@ -47,11 +39,6 @@ export default function Home() {
     "bg-pink-600",
     "bg-orange-600",
   ];
-
-  const chordTones = (chord) => {
-    const chordIdx = majorChords.indexOf(chord);
-    return [0, 2, 4, 6, 8, 10, 12].map((n) => selectedMajorScale[chordIdx + n]);
-  };
 
   const selectedRootStyle = (note) =>
     selectedRoot == note
