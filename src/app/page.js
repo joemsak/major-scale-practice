@@ -93,7 +93,7 @@ export default function Home() {
           </button>
         ))}
 
-      <div className="col-span-2 md:col-span-12">&nbsp;</div>
+      <div className="col-span-2 md:col-span-5">&nbsp;</div>
 
       {selectedChords.map((chord, i) => (
         <>
@@ -109,7 +109,7 @@ export default function Home() {
               <span className="text-5xl">{chordTones(chord)[n]}</span>
             </div>
           ))}
-          <div className="col-span-2 md:col-span-12">&nbsp;</div>
+          <div className="col-span-2 md:col-span-5">&nbsp;</div>
         </>
       ))}
     </main>
