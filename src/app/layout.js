@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
       <body
         className={cx(
           inter.className,
-          "grid items-center justify-center h-screen"
+          "grid py-8 justify-center items-start h-screen"
         )}
       >
         {children}
