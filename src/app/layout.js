@@ -14,7 +14,7 @@ export const viewport = {
 export const metadata = {
   title: "Chord Progression Practice Sheet",
   description:
-    "Major scale & chrod progression exercise designed by Tim Johnson ∙ Web Application by Joe Sak",
+    "Major scale & chord progression exercise designed by Tim Johnson ∙ Web Application by Joe Sak",
 };
 
 export default function RootLayout({ children }) {
@@ -27,6 +27,22 @@ export default function RootLayout({ children }) {
         )}
       >
         {children}
+        <div className="sticky bottom-0 p-4 dark:bg-black">
+          Major scale & chord progression exercise designed by{" "}
+          <a
+            href="https://tljii.com"
+            className="text-blue-600 dark:text-blue-400"
+          >
+            Tim Johnson
+          </a>{" "}
+          ∙ Web Application by{" "}
+          <a
+            href="https://joesak.com"
+            className="text-blue-600 dark:text-blue-400"
+          >
+            Joe Sak
+          </a>
+        </div>
       </body>
     </html>
   );
