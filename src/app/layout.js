@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
         )}
       >
         {children}
-        <div className="sticky bottom-0 p-4 dark:bg-black">
+        <div className="fixed bottom-0 p-4 dark:bg-black">
           Major scale & chord progression exercise designed by{" "}
           <a
             href="https://tljii.com"
